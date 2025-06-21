@@ -5,6 +5,9 @@
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 #include <DHT.h>
+#include <Preferences.h>
+
+Preferences umbral_eeprom;
 
 //ESTADOS
 int ESTADO = 1;
@@ -52,6 +55,16 @@ void setup()
   //Display
   dht.begin(); //inicializa en sensor de temperatura
   display.begin(SSD1306_SWITCHCAPVCC, 0x3C); //inicializa el display
+
+  //Lectura inicial de eeprom
+  umbral_eeprom.begin("ValorUmbral", true); //Se abre el eeprom en el setup en modo lectura (no se editan los valores del eeprom) 
+    if (umbral_eeprom.isKey("umbral"))        //Si hay valores guardados en la clave "umbral" (no va a haber nada si no se le guardo nada previamente)
+  {
+    umbral = umbral_eeprom.getFloat("umbral", 24.0); //Se lee el valor guardado bajo la clave "umbral" de la eeprom, y se lo asigna a la variable umbral. Si no hay nada guardado, se pone 24
+    Serial.print("Umbral de EEPROM: ");
+    Serial.println(umbral);
+  }
+  umbral_eeprom.end(); //Se cierra el uso de umbral_eeprom
 }
 
 void loop() 
@@ -88,48 +101,99 @@ void loop()
     //CAMBIO DE ESTADO
     if (val1 == 0)
     {
-      ESTADO = SW1_SEGS;
+      timer1000 = timer + 5000; //Se suman 5 segundos para comenzar el conteo
+      ESTADO = SW1_SEGS; //Se cambia de estado
     } 
-    
     break;
 
 
     case SW1_SEGS:
-    if (timer < timer1000)
+    if (timer > timer1000) //Si pasan 5 segundos
     {
-      timer1000 = timer + 5000;
+      ESTADO = SW1_OFF; //Se cambia a estado sw1_off
+    }
 
+    if (val1 == 1) //Si el boton se suelta
+    {
+      timer1000 = timer; //Se reinicia la diferencia entre timers
+      ESTADO = PANTALLA1; //Se regresa a pantalla1
+    }
+    break;
+
+
+    case SW1_OFF:
+    if (val1 == 1) //Si se suelta el boton
+    {
+      ESTADO = PANTALLA2;
     }
 
     break;
 
 
-    case SW1_OFF:
-
-
-    break;
-
-
     case PANTALLA2:
+    display.clearDisplay(); //Se reinicia el display
+    display.setTextSize(2); //Establece el tamaño de texto
+    display.setTextColor(WHITE);
+    
+    display.setCursor(0, 10);
+    display.println("SETEAR UMB"); //display de temperatura
+    display.setCursor(0, 40);
+    display.println(umbral); //display de umbral
 
+    display.display(); //Muestra el display
 
+    if (val1 == 0) //Comienzo de sumar umbral
+    {
+      ESTADO = SW1_OFF2;
+    }
+
+    if (val2 == 0)
+    {
+      timer1000 = timer + 5000; //Se suman 5 segundos para comenzar el conteo
+      ESTADO = SW2_5SEGS; //Se cambia de estado
+    }
     break;
 
 
     case SW1_OFF2: 
-
-
+    if (val2 == 1)
+    {
+      umbral = umbral + 1;
+      ESTADO = PANTALLA2;
+    }
     break;
 
 
     case SW2_5SEGS:
+    if (timer > timer1000) //Si pasan 5 segundos
+    {
+      ESTADO = SW2_OFF2; //Se cambia a estado sw1_off
+    } 
 
+    if (val2 == 1) //Si el boton se suelta
+    {
+      umbral = umbral - 1;
+
+      timer1000 = timer; //Se reinicia la diferencia entre timers
+      ESTADO = PANTALLA1; //Se regresa a pantalla1
+    }
 
     break;
 
 
     case SW2_OFF2:
+    if (val2 == 1)
+    {
+      ESTADO = PANTALLA1;
+      
+      //GUARDAR EL VALOR DEL UMBRAL EN LA EEPROM
+      prefs.begin("config", false);          //Se abre el eeprom en modo escritura (se van a editar los valores del eeprom) 
+      prefs.putFloat("umbral", umbral);      //En la clave "umbral" dentro del eeprom, se va a guardar el valor del umbral
+      prefs.end();                           //Se cierra el uso de umbral_eeprom
 
+      Serial.print("Umbral en la EEPROM actualizado: ");
+      Serial.println(umbral);
+    }
 
     break;
   }
