@@ -156,7 +156,7 @@ void loop()
 
 
     case SW1_OFF2: 
-    if (val2 == 1)
+    if (val1 == 1)
     {
       umbral = umbral + 1;
       ESTADO = PANTALLA2;
@@ -165,11 +165,6 @@ void loop()
 
 
     case SW2_5SEGS:
-    if (timer > timer1000) //Si pasan 5 segundos
-    {
-      ESTADO = SW2_OFF2; //Se cambia a estado sw1_off
-    } 
-
     if (val2 == 1) //Si el boton se suelta
     {
       umbral = umbral - 1;
@@ -178,6 +173,10 @@ void loop()
       ESTADO = PANTALLA1; //Se regresa a pantalla1
     }
 
+    if (timer > timer1000) //Si pasan 5 segundos
+    {
+      ESTADO = SW2_OFF2; //Se cambia a estado sw1_off
+    } 
     break;
 
 
@@ -187,12 +186,14 @@ void loop()
       ESTADO = PANTALLA1;
       
       //GUARDAR EL VALOR DEL UMBRAL EN LA EEPROM
+      /*
       umbral_eeprom.begin("config", false);          //Se abre el eeprom en modo escritura (se van a editar los valores del eeprom) 
       umbral_eeprom.putFloat("umbral", umbral);      //En la clave "umbral" dentro del eeprom, se va a guardar el valor del umbral
       umbral_eeprom.end();                           //Se cierra el uso de umbral_eeprom
 
       Serial.print("Umbral en la EEPROM actualizado: ");
       Serial.println(umbral);
+      */
     }
 
     break;
