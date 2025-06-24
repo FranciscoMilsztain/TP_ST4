@@ -58,7 +58,7 @@ void setup()
 
   //Lectura inicial de eeprom
   umbral_eeprom.begin("ValorUmbral", true); //Se abre el eeprom en el setup en modo lectura (no se editan los valores del eeprom) 
-    if (umbral_eeprom.isKey("umbral"))        //Si hay valores guardados en la clave "umbral" (no va a haber nada si no se le guardo nada previamente)
+    if (umbral_eeprom.isKey("umbral"))      //Si hay valores guardados en la clave "umbral" (no va a haber nada si no se le guardo nada previamente)
   {
     umbral = umbral_eeprom.getFloat("umbral", 24.0); //Se lee el valor guardado bajo la clave "umbral" de la eeprom, y se lo asigna a la variable umbral. Si no hay nada guardado, se pone 24
     Serial.print("Umbral de EEPROM: ");
