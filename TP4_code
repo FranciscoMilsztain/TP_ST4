@@ -111,7 +111,7 @@ void loop()
     if (timer > timer1000) //Si pasan 5 segundos
     {
       ESTADO = SW1_OFF; //Se cambia a estado sw1_off
-      Serial.println("Ya se puede soltar");
+      Serial.println("Ya se puede soltar 1");
     }
 
     if (val1 == 1) //Si el boton se suelta
@@ -176,7 +176,7 @@ void loop()
     if (timer > timer1000) //Si pasan 5 segundos
     {
       ESTADO = SW2_OFF2; //Se cambia a estado sw2_off2
-      Serial.println("Ya se puede soltar");
+      Serial.println("Ya se puede soltar 2");
     } 
     break;
 
@@ -187,7 +187,7 @@ void loop()
       ESTADO = PANTALLA1;
       
       //GUARDAR EL VALOR DEL UMBRAL EN LA EEPROM
-      umbral_eeprom.begin("ValorUmbral", false);          //Se abre el eeprom en modo escritura (se van a editar los valores del eeprom) 
+      umbral_eeprom.begin("ValorUmbral", false);     //Se abre el eeprom en modo escritura (se van a editar los valores del eeprom) 
       umbral_eeprom.putFloat("umbral", umbral);      //En la clave "umbral" dentro del eeprom, se va a guardar el valor del umbral
       umbral_eeprom.end();                           //Se cierra el uso de umbral_eeprom
 
