@@ -77,7 +77,7 @@ void loop()
 
   //Se leen los botones
   val1 = digitalRead(SW1);
-  val2 reading2 = digitalRead(SW2);
+  val2 = digitalRead(SW2);
 
   switch (ESTADO) //INICIO DE MÁQUINA DE ESTADOS
   {
@@ -102,12 +102,12 @@ void loop()
     if (val1 == 0)
     {
       timer1000 = timer + 5000; //Se suman 5 segundos para comenzar el conteo
-      ESTADO = SW1_SEGS; //Se cambia de estado
+      ESTADO = SW1_5SEGS; //Se cambia de estado
     } 
     break;
 
 
-    case SW1_SEGS:
+    case SW1_5SEGS:
     if (timer > timer1000) //Si pasan 5 segundos
     {
       ESTADO = SW1_OFF; //Se cambia a estado sw1_off
@@ -187,9 +187,9 @@ void loop()
       ESTADO = PANTALLA1;
       
       //GUARDAR EL VALOR DEL UMBRAL EN LA EEPROM
-      prefs.begin("config", false);          //Se abre el eeprom en modo escritura (se van a editar los valores del eeprom) 
-      prefs.putFloat("umbral", umbral);      //En la clave "umbral" dentro del eeprom, se va a guardar el valor del umbral
-      prefs.end();                           //Se cierra el uso de umbral_eeprom
+      umbral_eeprom.begin("config", false);          //Se abre el eeprom en modo escritura (se van a editar los valores del eeprom) 
+      umbral_eeprom.putFloat("umbral", umbral);      //En la clave "umbral" dentro del eeprom, se va a guardar el valor del umbral
+      umbral_eeprom.end();                           //Se cierra el uso de umbral_eeprom
 
       Serial.print("Umbral en la EEPROM actualizado: ");
       Serial.println(umbral);
