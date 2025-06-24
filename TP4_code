@@ -170,7 +170,7 @@ void loop()
       umbral = umbral - 1;
 
       timer1000 = timer; //Se reinicia la diferencia entre timers
-      ESTADO = PANTALLA1; //Se regresa a pantalla1
+      ESTADO = PANTALLA2; //Se regresa a pantalla1
     }
 
     if (timer > timer1000) //Si pasan 5 segundos
@@ -186,14 +186,12 @@ void loop()
       ESTADO = PANTALLA1;
       
       //GUARDAR EL VALOR DEL UMBRAL EN LA EEPROM
-      /*
-      umbral_eeprom.begin("config", false);          //Se abre el eeprom en modo escritura (se van a editar los valores del eeprom) 
+      umbral_eeprom.begin("ValorUmbral", false);          //Se abre el eeprom en modo escritura (se van a editar los valores del eeprom) 
       umbral_eeprom.putFloat("umbral", umbral);      //En la clave "umbral" dentro del eeprom, se va a guardar el valor del umbral
       umbral_eeprom.end();                           //Se cierra el uso de umbral_eeprom
 
       Serial.print("Umbral en la EEPROM actualizado: ");
       Serial.println(umbral);
-      */
     }
 
     break;
