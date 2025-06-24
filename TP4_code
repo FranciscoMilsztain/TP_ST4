@@ -7,7 +7,7 @@
 #include <DHT.h>
 #include <Preferences.h>
 
-Preferences umbral_eeprom;
+Preferences umbral_eeprom; //Se define el objeto umbral_eeprom
 
 //ESTADOS
 int ESTADO = 1;
@@ -57,7 +57,7 @@ void setup()
   display.begin(SSD1306_SWITCHCAPVCC, 0x3C); //inicializa el display
 
   //Lectura inicial de eeprom
-  umbral_eeprom.begin("ValorUmbral", true); //Se abre el eeprom en el setup en modo lectura (no se editan los valores del eeprom) 
+  umbral_eeprom.begin("ValorUmbral", true); //Se abre el eeprom en el setup en modo lectura (no se editan los valores del eeprom), "Valorumbral" es la carpeta 
     if (umbral_eeprom.isKey("umbral"))      //Si hay valores guardados en la clave "umbral" (no va a haber nada si no se le guardo nada previamente)
   {
     umbral = umbral_eeprom.getFloat("umbral", 24.0); //Se lee el valor guardado bajo la clave "umbral" de la eeprom, y se lo asigna a la variable umbral. Si no hay nada guardado, se pone 24
@@ -195,6 +195,6 @@ void loop()
       Serial.println(umbral);
     }
     break;
-    
+
   }
 }
