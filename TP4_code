@@ -111,6 +111,7 @@ void loop()
     if (timer > timer1000) //Si pasan 5 segundos
     {
       ESTADO = SW1_OFF; //Se cambia a estado sw1_off
+      Serial.println("Ya se puede soltar");
     }
 
     if (val1 == 1) //Si el boton se suelta
@@ -126,7 +127,6 @@ void loop()
     {
       ESTADO = PANTALLA2;
     }
-
     break;
 
 
@@ -175,7 +175,8 @@ void loop()
 
     if (timer > timer1000) //Si pasan 5 segundos
     {
-      ESTADO = SW2_OFF2; //Se cambia a estado sw1_off
+      ESTADO = SW2_OFF2; //Se cambia a estado sw2_off2
+      Serial.println("Ya se puede soltar");
     } 
     break;
 
@@ -193,7 +194,7 @@ void loop()
       Serial.print("Umbral en la EEPROM actualizado: ");
       Serial.println(umbral);
     }
-
     break;
+    
   }
 }
